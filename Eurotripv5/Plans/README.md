@@ -1,3 +1,8 @@
+## 📘 Navigation Menu
+[🏠 Home](https://truedevopsmk-lab.github.io/TEMP-REPO/) • [Attractions, Cafés & Local Specialties](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FChristmas-Trip%2FAttractions%2C%20Caf%C3%A9s%20%26%20Local%20Specialties/) • [Budapest Plan](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FChristmas-Trip%2FBudapest-Plan/) • [Budapest](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FChristmas-Trip%2FBudapest/) • [Christmas Trip](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FChristmas-Trip/) • [Comparison Nov vs Dec Dates](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FComparison%20Nov%20vs%20Dec%20Dates/) • [December Travel Option](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FDecember%20Travel%20Option/) • [Plans](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FEurotripv5%2FPlans/) • [Trip Packing Checklist](https://truedevopsmk-lab.github.io/TEMP-REPO/.%2FChristmas-Trip%2FTrip%20Packing%20Checklist/) • 
+
+---
+<!-- inject-nav -->
 Nice — here’s a tight, practical **2.5-day Budapest plan** that fits your *Top-15* hits while **skipping time-heavy interiors/museums**. I assume you arrive **~12:35 Day 0**, clear airport, and can start exploring ~15:00. If your arrival is later or you feel jet-lagged, trim Day-0 slightly.
 
 I give (A) a high-level plan per half/full day, (B) a timed walkable schedule you can follow, and (C) quick tips (tickets, transport, priorities). Let’s go.
