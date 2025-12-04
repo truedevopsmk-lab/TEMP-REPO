@@ -1,7 +1,0 @@
-## 📘 Navigation Menu
-[December Travel Option](https://truedevopsmk-lab.github.io/TEMP-REPO/./December%20Travel%20Option/) • [Budapest](https://truedevopsmk-lab.github.io/TEMP-REPO/./Christmas-Trip/Budapest/) • [Christmas Trip](https://truedevopsmk-lab.github.io/TEMP-REPO/./Christmas-Trip/) • [Attractions, Cafés & Local Specialties](https://truedevopsmk-lab.github.io/TEMP-REPO/./Christmas-Trip/Attractions,%20Cafés%20&%20Local%20Specialties/) • [Trip Packing Checklist](https://truedevopsmk-lab.github.io/TEMP-REPO/./Christmas-Trip/Trip%20Packing%20Checklist/) • [Budapest Plan](https://truedevopsmk-lab.github.io/TEMP-REPO/./Christmas-Trip/Budapest-Plan/) • [🏠 Home](https://truedevopsmk-lab.github.io/TEMP-REPO/) • [Plans](https://truedevopsmk-lab.github.io/TEMP-REPO/./Eurotripv5/Plans/) • [Budapest](https://truedevopsmk-lab.github.io/TEMP-REPO/./Eurotripv5/Budapest/) • [Eurotripv5](https://truedevopsmk-lab.github.io/TEMP-REPO/./Eurotripv5/) • [Attractions, Cafés & Local Specialties](https://truedevopsmk-lab.github.io/TEMP-REPO/./Eurotripv5/Attractions,%20Cafés%20&%20Local%20Specialties/) • [Trip Packing Checklist](https://truedevopsmk-lab.github.io/TEMP-REPO/./Eurotripv5/Trip%20Packing%20Checklist/) • [Budapest Plan](https://truedevopsmk-lab.github.io/TEMP-REPO/./Eurotripv5/Budapest-Plan/) • [Comparison Nov vs Dec Dates](https://truedevopsmk-lab.github.io/TEMP-REPO/./Comparison%20Nov%20vs%20Dec%20Dates/) • 
-
----
-<!-- inject-nav -->
-# TEMP-REPO
-Just creating this as a temp repo to test and delete
