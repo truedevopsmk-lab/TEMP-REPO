@@ -9,75 +9,88 @@ jobs:
   inject:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write   # REQUIRED for auto-commit to work
-
     steps:
-      - name: Checkout Repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build Navigation Menu
         id: nav
         shell: bash
         run: |
-          echo "Building navigation menu..."
+          REPO_NAME=$(basename "$GITHUB_REPOSITORY")
+          USER_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f1)
 
+          BASE_URL="https://${USER_NAME}.github.io/${REPO_NAME}"
+
+          echo "Generating navigation..."
           NAV="## 📘 Navigation Menu\n"
 
-          # Repo name for GitHub Pages URL
-          REPO_NAME=$(basename "$GITHUB_REPOSITORY")
+          declare -a entries=()
 
           while IFS= read -r -d '' readme; do
             folder=$(dirname "$readme")
 
-            # Skip root README
+            # Skip root — we'll manually add Home
             if [[ "$folder" == "." ]]; then
-              NAV+="[🏠 Home](https://$GITHUB_REPOSITORY_OWNER.github.io/$REPO_NAME/) • "
               continue
             fi
 
-            # Pretty label
-            base=$(basename "$folder")
-            pretty=$(echo "$base" | sed 's/-/ /g')
+            # Pretty name
+            name=$(basename "$folder")
+            pretty=$(echo "$name" | sed 's/-/ /g')
 
-            # Encode spaces manually
-            encoded="${folder// /%20}"
-
-            # Add entry
-            NAV+="[$pretty](https://$GITHUB_REPOSITORY_OWNER.github.io/$REPO_NAME/$encoded/) • "
-
+            # Encode path safely
+            encoded=$(python3 - <<EOF
+import urllib.parse
+print(urllib.parse.quote("$folder"))
+EOF
+)
+            entries+=("$pretty|$encoded")
           done < <(find . -type f -name "README.md" -print0)
+
+          # Sort alphabetically
+          IFS=$'\n' sorted=($(sort <<<"${entries[*]}"))
+          unset IFS
+
+          # Add Home first (ALWAYS)
+          NAV+="[🏠 Home](${BASE_URL}/) • "
+
+          # Append all sorted entries
+          for item in "${sorted[@]}"; do
+            pretty="${item%%|*}"
+            encoded="${item##*|}"
+            NAV+="[$pretty](${BASE_URL}/${encoded}/) • "
+          done
 
           NAV+="\n\n---\n<!-- inject-nav -->"
 
+          # Expose menu
           {
             echo "nav<<EOF"
             echo -e "$NAV"
             echo "EOF"
-          } >> $GITHUB_OUTPUT
+          } >> "$GITHUB_OUTPUT"
 
-      - name: Inject Navigation into README files
+      - name: Inject into README.md files
         shell: bash
         run: |
-          NAV="${{ steps.nav.outputs.nav }}"
+          NAV_CONTENT="${{ steps.nav.outputs.nav }}"
 
+          echo "Injecting into README.md files..."
           while IFS= read -r -d '' file; do
-
-            # Skip if nav already present
             if grep -q "<!-- inject-nav -->" "$file"; then
-              echo "Skipping $file (already injected)"
+              echo "Skipping $file — already injected."
               continue
             fi
 
             echo "Injecting into $file"
             tmp=$(mktemp)
-            echo -e "$NAV" > "$tmp"
+            echo -e "$NAV_CONTENT" > "$tmp"
             cat "$file" >> "$tmp"
             mv "$tmp" "$file"
-
           done < <(find . -type f -name "README.md" -print0)
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Auto-injected nav menu"
+          commit_message: "Auto-injected navigation menu"
