@@ -19,32 +19,28 @@ jobs:
         run: |
           REPO_NAME=$(basename "$GITHUB_REPOSITORY")
           USER_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f1)
-
           BASE_URL="https://${USER_NAME}.github.io/${REPO_NAME}"
 
-          echo "Generating navigation..."
+          echo "Generating nav..."
           NAV="## 📘 Navigation Menu\n"
 
           declare -a entries=()
 
+          # Find README.md files safely
           while IFS= read -r -d '' readme; do
             folder=$(dirname "$readme")
 
-            # Skip root — we'll manually add Home
+            # Skip root README — Home will be added manually
             if [[ "$folder" == "." ]]; then
               continue
             fi
 
-            # Pretty name
             name=$(basename "$folder")
             pretty=$(echo "$name" | sed 's/-/ /g')
 
-            # Encode path safely
-            encoded=$(python3 - <<EOF
-import urllib.parse
-print(urllib.parse.quote("$folder"))
-EOF
-)
+            # URL-encode path (pure bash)
+            encoded=$(printf "%s" "$folder" | jq -sRr @uri)
+
             entries+=("$pretty|$encoded")
           done < <(find . -type f -name "README.md" -print0)
 
@@ -52,45 +48,45 @@ EOF
           IFS=$'\n' sorted=($(sort <<<"${entries[*]}"))
           unset IFS
 
-          # Add Home first (ALWAYS)
+          # Add Home FIRST
           NAV+="[🏠 Home](${BASE_URL}/) • "
 
-          # Append all sorted entries
-          for item in "${sorted[@]}"; do
-            pretty="${item%%|*}"
-            encoded="${item##*|}"
+          for entry in "${sorted[@]}"; do
+            pretty="${entry%%|*}"
+            encoded="${entry##*|}"
             NAV+="[$pretty](${BASE_URL}/${encoded}/) • "
           done
 
           NAV+="\n\n---\n<!-- inject-nav -->"
 
-          # Expose menu
           {
             echo "nav<<EOF"
             echo -e "$NAV"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Inject into README.md files
+      - name: Inject into README.md
         shell: bash
         run: |
           NAV_CONTENT="${{ steps.nav.outputs.nav }}"
 
-          echo "Injecting into README.md files..."
+          echo "Injecting nav..."
           while IFS= read -r -d '' file; do
             if grep -q "<!-- inject-nav -->" "$file"; then
               echo "Skipping $file — already injected."
               continue
             fi
 
-            echo "Injecting into $file"
             tmp=$(mktemp)
             echo -e "$NAV_CONTENT" > "$tmp"
             cat "$file" >> "$tmp"
             mv "$tmp" "$file"
+
+            echo "Injected: $file"
+
           done < <(find . -type f -name "README.md" -print0)
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Auto-injected navigation menu"
+          commit_message: "Auto-injected nav menu"
